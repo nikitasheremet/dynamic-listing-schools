@@ -1,7 +1,8 @@
 const express = require("express");
+const cors = require("cors");
 let app = express();
 const port = 4000;
-
+app.use(cors());
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -19,10 +20,11 @@ const pool = new Pool({
 
 app.get("/", (req, res) => {
   pool.query(`SELECT * FROM schools;`).then(result => {
-    let rows = result.rows[0];
+    let rows = result.rows;
     res.status(200).json({ rows });
   });
 });
+
 app.post("/school/add", (req, res) => {});
 app.put("/school/update/:id", (req, res) => {});
 
