@@ -1,4 +1,4 @@
-# Dynamic Listing Website for Schoools
+# Dynamic Listing Website for Schools
 
 ## Features
 - Home Page - displaying all added schools, and create button to add a new school
