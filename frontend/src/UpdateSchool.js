@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function UpdateSchool({ handleUpdate }) {
+export default function UpdateSchool({
+  updateSchool,
+  schoolInfo,
+  schoolInfo: { id, name, about, location, admission, image_url }
+}) {
   const [formFields, setFormFields] = useState({
     name: "",
     about: "",
     location: "",
-    admission: ""
+    admission: "",
+    image_url: ""
   });
+
+  useEffect(() => {
+    setFormFields({
+      ...formFields,
+      name,
+      about,
+      location,
+      admission,
+      image_url
+    });
+  }, [schoolInfo]);
   return (
     <div>
       <input
@@ -34,9 +50,16 @@ export default function UpdateSchool({ handleUpdate }) {
         }
       />
       <input
+        type="file"
+        name="image"
+        onChange={e =>
+          setFormFields({ ...formFields, image_url: e.target.files[0] })
+        }
+      />
+      <input
         type="submit"
         value="Save"
-        onClick={() => handleUpdate(formFields)}
+        onClick={() => updateSchool(formFields, id)}
       />
     </div>
   );

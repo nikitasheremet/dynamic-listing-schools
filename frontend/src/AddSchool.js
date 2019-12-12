@@ -5,7 +5,8 @@ export default function AddSchool({ handleAdd }) {
     name: "",
     about: "",
     location: "",
-    admission: ""
+    admission: "",
+    image_url: ""
   });
 
   return (
@@ -32,6 +33,13 @@ export default function AddSchool({ handleAdd }) {
         value={formFields.admission}
         onChange={e =>
           setFormFields({ ...formFields, admission: e.target.value })
+        }
+      />
+      <input
+        type="file"
+        name="image"
+        onChange={e =>
+          setFormFields({ ...formFields, image_url: e.target.files[0] })
         }
       />
       <input type="submit" value="Add" onClick={() => handleAdd(formFields)} />
