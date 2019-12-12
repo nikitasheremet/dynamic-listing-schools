@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Axios from "axios";
 import School from "./School";
+import AddSchool from "./AddSchool";
 
 function App() {
   const [schools, setSchools] = useState({});
@@ -23,9 +24,21 @@ function App() {
       setSchools(schoolList);
     });
   }, []);
+  const handleAdd = ({ name, about, location, admission }) => {
+    Axios.post("http://localhost:4000/school/add", {
+      name,
+      about,
+      location,
+      admission
+    }).then(() => {
+      let newId = Number(Object.keys(schools).pop()) + 1;
+      setSchools({ ...schools, [newId]: { name, about, location, admission } });
+    });
+  };
   console.log(schools);
   return (
     <div className="App">
+      <AddSchool handleAdd={handleAdd} />
       {Object.values(schools).map(school => {
         return <School key={school.id} schoolInfo={school} />;
       })}

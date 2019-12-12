@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 
-export default function AddSchool({ handleAdd }) {
+export default function UpdateSchool({ handleUpdate }) {
   const [formFields, setFormFields] = useState({
     name: "",
     about: "",
     location: "",
     admission: ""
   });
-
   return (
     <div>
       <input
@@ -34,7 +33,11 @@ export default function AddSchool({ handleAdd }) {
           setFormFields({ ...formFields, admission: e.target.value })
         }
       />
-      <input type="submit" value="Add" onClick={() => handleAdd(formFields)} />
+      <input
+        type="submit"
+        value="Save"
+        onClick={() => handleUpdate(formFields)}
+      />
     </div>
   );
 }
