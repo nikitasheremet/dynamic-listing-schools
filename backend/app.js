@@ -1,10 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const upload = require("./imageUpload");
+// var multer = require("multer");
+// var upload = multer({ dest: "/" });
+
 let app = express();
 const port = 4000;
+
 app.use(cors());
 app.use(bodyParser.json());
+
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -20,6 +26,8 @@ const pool = new Pool({
 //   },
 // }
 
+const singleUpload = upload.single("image");
+
 app.get("/", (req, res) => {
   pool.query(`SELECT * FROM schools;`).then(result => {
     let rows = result.rows;
@@ -27,17 +35,33 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/school/add", (req, res) => {
+app.post("/school/add", singleUpload, (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
   let { name, about, location, admission } = req.body;
+  let imgURL = req.file.location;
   pool
     .query(
-      `INSERT INTO schools (name, about, location, admission) VALUES ($1, $2, $3, $4)`,
-      [name, about, location, admission]
+      `INSERT INTO schools (name, about, location, admission, image_url) VALUES ($1, $2, $3, $4, $5)`,
+      [name, about, location, admission, imgURL]
     )
     .then(() => {
-      res.status(200).json({ msg: "success" });
+      res.status(200).json({ msg: "success add" });
     });
 });
-app.put("/school/update/:id", (req, res) => {});
+app.put("/school/update/:id", singleUpload, (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
+  let { name, about, location, admission } = req.body;
+  let imgURL = req.file ? req.file.location : req.body.image_url;
+  pool
+    .query(
+      `UPDATE schools SET name = $1, about = $2, location = $3, admission = $4, image_url = $5 WHERE id = $6`,
+      [name, about, location, admission, imgURL, req.params.id]
+    )
+    .then(() => {
+      res.status(200).json({ msg: "success update" });
+    });
+});
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));

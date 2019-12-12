@@ -5,5 +5,6 @@ CREATE TABLE schools (
   name VARCHAR(500),
   about TEXT,
   location VARCHAR(500),
-  admission VARCHAR(500)
+  admission TEXT,
+  image_url TEXT
 );
