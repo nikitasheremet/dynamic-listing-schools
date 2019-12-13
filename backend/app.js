@@ -53,4 +53,6 @@ app.put("/school/update/:id", singleUpload, (req, res) => {
     });
 });
 
-app.listen(port, () => console.log(`App listening on port ${port}!`));
+app.listen(process.env.PORT || 5000, () =>
+  console.log(`App listening on port ${port}!`)
+);
