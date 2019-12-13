@@ -19,16 +19,26 @@ export default function School({
         <img src={image_url} style={{ width: "120px", height: "100px" }} />
         <div className="school-info">
           <div className="school-unclicked">
-            <div>{name}</div>
+            <div style={{ fontWeight: "bolder" }}>{name}</div>
           </div>
           <div
             className="school-clicked"
             style={{ display: schoolClicked ? "flex" : "none" }}
           >
             <div className="school-clicked-info">
-              <div>About: {about}</div>
-              <div>Location: {location}</div>
-              <div>Admission Requirements: {admission}</div>
+              <div>
+                <span style={{ fontWeight: "bolder" }}>About:</span> {about}
+              </div>
+              <div>
+                <span style={{ fontWeight: "bolder" }}>Location:</span>{" "}
+                {location}
+              </div>
+              <div>
+                <span style={{ fontWeight: "bolder" }}>
+                  Admission Requirements:
+                </span>{" "}
+                {admission}
+              </div>
             </div>
             <button
               className="school-update-button"
