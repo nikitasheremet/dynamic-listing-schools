@@ -1,1 +1,0 @@
-INSERT INTO schools (name, about, location, admission) VALUES ('St. Johns', 'Best School', 'Downtown', 'yes');
