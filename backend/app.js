@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 
 var pg = require("pg");
 var conString = process.env.DATABASE_URL;
+
 var client = new pg.Client(conString);
 client.connect(function(err) {
   if (err) {
