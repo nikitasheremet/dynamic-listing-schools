@@ -11,7 +11,7 @@ function App() {
   const [addButtonClicked, setAddButtonClicked] = useState(false);
 
   useEffect(() => {
-    Axios.get("http://localhost:4000/").then(result => {
+    Axios.get("https://cryptic-harbor-64765.herokuapp.com/").then(result => {
       let queryResult = result.data.rows;
       let schoolList = queryResult.reduce((directory, school) => {
         return {
@@ -31,7 +31,10 @@ function App() {
   }, [update]);
   const handleAdd = ({ name, about, location, admission, image_url }) => {
     let formData = createForm(name, about, location, admission, image_url);
-    Axios.post("http://localhost:4000/school/add", formData).then(() => {
+    Axios.post(
+      "https://cryptic-harbor-64765.herokuapp.com/school/add",
+      formData
+    ).then(() => {
       setUpdate(!update);
       setAddButtonClicked(!addButtonClicked);
     });
@@ -41,11 +44,12 @@ function App() {
     id
   ) => {
     let formData = createForm(name, about, location, admission, image_url);
-    Axios.put(`http://localhost:4000/school/update/${id}`, formData).then(
-      () => {
-        setUpdate(!update);
-      }
-    );
+    Axios.put(
+      `https://cryptic-harbor-64765.herokuapp.com/school/update/${id}`,
+      formData
+    ).then(() => {
+      setUpdate(!update);
+    });
   };
   console.log(schools);
   return (
