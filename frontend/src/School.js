@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import UpdateSchool from "./UpdateSchool";
+import "./styles/School.sass";
 
 export default function School({
   updateSchool,
@@ -7,20 +8,47 @@ export default function School({
   schoolInfo: { name, about, location, admission, image_url }
 }) {
   const [updateClicked, setUpdateClicked] = useState(false);
+  const [schoolClicked, setSchoolClicked] = useState(false);
   return (
     <div>
-      <div style={{ display: updateClicked ? "none" : "flex" }}>
-        <img src={image_url} style={{ width: "80px", height: "80px" }} />
-        <div>{name}</div>
-        <div>{about}</div>
-        <div>{location}</div>
-        <div>{admission}</div>
-
-        <button onClick={() => setUpdateClicked(!updateClicked)}>Update</button>
+      <div
+        style={{ display: updateClicked ? "none" : "flex" }}
+        onClick={() => setSchoolClicked(!schoolClicked)}
+        className="school-listing"
+      >
+        <img src={image_url} style={{ width: "120px", height: "100px" }} />
+        <div className="school-info">
+          <div className="school-unclicked">
+            <div>{name}</div>
+          </div>
+          <div
+            className="school-clicked"
+            style={{ display: schoolClicked ? "flex" : "none" }}
+          >
+            <div className="school-clicked-info">
+              <div>About: {about}</div>
+              <div>Location: {location}</div>
+              <div>Admission Requirements: {admission}</div>
+            </div>
+            <button
+              className="school-update-button"
+              onClick={() => setUpdateClicked(!updateClicked)}
+            >
+              Update
+            </button>
+          </div>
+        </div>
       </div>
-      <div style={{ display: updateClicked ? "flex" : "none" }}>
-        <UpdateSchool schoolInfo={schoolInfo} updateSchool={updateSchool} />
-        <button onClick={() => setUpdateClicked(!updateClicked)}>Close</button>
+      <div
+        className="update-form"
+        style={{ display: updateClicked ? "flex" : "none" }}
+      >
+        <UpdateSchool
+          schoolInfo={schoolInfo}
+          updateSchool={updateSchool}
+          updateClicked={updateClicked}
+          setUpdateClicked={setUpdateClicked}
+        />
       </div>
     </div>
   );

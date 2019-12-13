@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
+import "./styles/App.sass";
 import Axios from "axios";
 import School from "./School";
 import AddSchool from "./AddSchool";
+import createForm from "./helperFunction";
 
 function App() {
   const [schools, setSchools] = useState({});
   const [update, setUpdate] = useState(true);
+  const [addButtonClicked, setAddButtonClicked] = useState(false);
 
   useEffect(() => {
     Axios.get("http://localhost:4000/").then(result => {
@@ -28,51 +30,55 @@ function App() {
     });
   }, [update]);
   const handleAdd = ({ name, about, location, admission, image_url }) => {
-    console.log(image_url);
-    let formData = new FormData();
-    formData.append("name", name);
-    formData.append("about", about);
-    formData.append("location", location);
-    formData.append("admission", admission);
-    formData.append("image", image_url);
+    let formData = createForm(name, about, location, admission, image_url);
     Axios.post("http://localhost:4000/school/add", formData).then(() => {
       setUpdate(!update);
+      setAddButtonClicked(!addButtonClicked);
     });
   };
   const updateSchool = (
     { name, about, location, admission, image_url },
     id
   ) => {
-    console.log(id);
-    let formData = new FormData();
-    formData.append("name", name);
-    formData.append("about", about);
-    formData.append("location", location);
-    formData.append("admission", admission);
-    formData.append("image", image_url);
-    console.log(name, about, location, admission, image_url);
+    let formData = createForm(name, about, location, admission, image_url);
     Axios.put(`http://localhost:4000/school/update/${id}`, formData).then(
       () => {
-        setSchools({
-          ...schools,
-          [id]: { name, about, location, admission, image_url }
-        });
+        setUpdate(!update);
       }
     );
   };
   console.log(schools);
   return (
     <div className="App">
-      <AddSchool handleAdd={handleAdd} />
-      {Object.values(schools).map(school => {
-        return (
-          <School
-            key={school.id}
-            schoolInfo={school}
-            updateSchool={updateSchool}
-          />
-        );
-      })}
+      <div className="header">
+        <h2>Dynamic School List</h2>
+        <h4>Home</h4>
+      </div>
+      <div className="all-schools">
+        <h3>List of Schools</h3>
+        <div className="add-school-div">
+          <button
+            className="add-school-button"
+            onClick={() => setAddButtonClicked(!addButtonClicked)}
+          >
+            Add School <span>+</span>
+          </button>
+          <div style={{ display: addButtonClicked ? "block" : "none" }}>
+            <AddSchool handleAdd={handleAdd} />
+          </div>
+        </div>
+        <div className="school-list">
+          {Object.values(schools).map(school => {
+            return (
+              <School
+                key={school.id}
+                schoolInfo={school}
+                updateSchool={updateSchool}
+              />
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
