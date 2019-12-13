@@ -2,8 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const upload = require("./imageUpload");
-// var multer = require("multer");
-// var upload = multer({ dest: "/" });
 
 let app = express();
 const port = 4000;
@@ -20,12 +18,6 @@ const pool = new Pool({
   database: "dynamic_list"
 });
 
-// module.exports = {
-//   query: (text, params, callback) => {
-//     return pool.query(text, params, callback)
-//   },
-// }
-
 const singleUpload = upload.single("image");
 
 app.get("/", (req, res) => {
@@ -36,8 +28,6 @@ app.get("/", (req, res) => {
 });
 
 app.post("/school/add", singleUpload, (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
   let { name, about, location, admission } = req.body;
   let imgURL = req.file.location;
   pool
@@ -50,8 +40,6 @@ app.post("/school/add", singleUpload, (req, res) => {
     });
 });
 app.put("/school/update/:id", singleUpload, (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
   let { name, about, location, admission } = req.body;
   let imgURL = req.file ? req.file.location : req.body.image_url;
   pool
